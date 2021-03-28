@@ -11,12 +11,14 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-import os
+import os,sys
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# 追加导包路径
+sys.path.insert(0,os.path.join(BASE_DIR,'apps'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -39,7 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'meiduo_mall.apps.users',
+    # 'meiduo_mall.apps.users',  追加导包路径后就不需要写这么长了
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -158,8 +161,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
+#访问前缀
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR,'static'), #实际访问路径
+)
 
 #配置工程日志
 LOGGING = {
@@ -202,3 +209,5 @@ LOGGING = {
         },
     }
 }
+#指定自定义的用户模型类 值的语法 ==> '子应用.用户模型类'
+AUTH_USER_MODEL = 'users.User'
