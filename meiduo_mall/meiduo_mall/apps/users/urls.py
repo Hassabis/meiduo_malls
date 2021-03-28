@@ -5,4 +5,5 @@ from . import views
 urlpatterns = [
     #用户注册 reverse(users:register) == '/register/'
     url(r'^register/$',views.UsersView.as_view(),name='register'),
+    url(r'^usernames/(?P<username>[a-zA-Z0-9_-]{5,20})/count/$',views.UserNameCount.as_view()),
 ]

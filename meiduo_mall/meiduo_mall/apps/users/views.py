@@ -4,8 +4,15 @@ from django.http import HttpResponse
 from django.views import View
 from django import http
 import re
+from django.contrib.auth import login
 from users.models import User
 # Create your views here.
+class UserNameCount(View):
+    def get(self,request,username):
+        count = User.objects.filter(username = username).count()
+        return http.JsonResponse({"code":0,"errmsg":'OK','count':count})
+
+
 class UsersView(View):
     """用户注册"""
     def get(self,request):
@@ -34,10 +41,13 @@ class UsersView(View):
         if allow != 'on':
             return http.HttpResponseForbidden('请勾选协议')
 
+        # return render(request, 'register.html', {"register_errmes": "注册失败"})
+
         try:
-            User.objects.create_user(username=username,password=password,mobile = mobile)
+            user = User.objects.create_user(username=username,password=password,mobile = mobile)
         except DatabaseError:
             return render(request,'register.html',{"register_errmes":"注册失败"})
 
+        login(request,user)
 
         return redirect(reverse("content:index"))
