@@ -10,6 +10,8 @@ let vm = new Vue({
 		allow:'',
 		image_code:'',
 		sms_code:'',
+		uuid:'',
+		image_code_url:'',
 
 
 		// v-show
@@ -23,7 +25,16 @@ let vm = new Vue({
 		error_message:'',
 		error_mobile_message:'',
 	},
+	mounted(){
+		this.generate_image_code();
+	},
 	methods:{//定义事件和实现方法 采用的是es6的写法
+		//图形验证码,封装思想，进行代码复用
+		generate_image_code(){
+			this.uuid = new Date().getTime();
+			// this.uuid = 'e1b6120f-053b-42a0-9926-28eb8f1400b6';
+			this.image_code_url = '/image_codes/' + this.uuid + '/';
+		},
 		check_username(){
 			//用户名是5-20个字符 [a-zA-Z0-9_-]
 			//定义正则
@@ -34,6 +45,21 @@ let vm = new Vue({
 				//匹配失败,展示错误信息
 				this.error_message = '请输入5-20个字符的用户名';
 				this.error_name = true;
+			}
+			if (this.error_name == false){
+				let url = '/usernames/' + this.username + '/count/';
+				axios.get(url,{
+					responseType:'json'
+				}).then(response =>{
+					if (response.data.count == 1){
+						this.error_message = '用户名已经存在';
+						this.error_name = true;
+					}else {
+						this.error_name = false;
+					}
+				}).catch(error =>{
+					console.log(error.data)
+				})
 			}
 		},
 		check_pwd(){
