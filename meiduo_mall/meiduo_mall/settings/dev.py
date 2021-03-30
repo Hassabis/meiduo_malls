@@ -218,3 +218,5 @@ LOGGING = {
 }
 #指定自定义的用户模型类 值的语法 ==> '子应用.用户模型类'
 AUTH_USER_MODEL = 'users.User'
+#指定自定义的认证后端，实现用户可以使用手机号跟账号登录 在djagno.conf.global_settings下
+AUTHENTICATION_BACKENDS = ['users.utlis.UsernameMobileBackends']

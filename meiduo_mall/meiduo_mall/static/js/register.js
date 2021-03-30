@@ -20,6 +20,7 @@ let vm = new Vue({
 		error_check_password:false,
 		error_phone:false,
 		error_allow:false,
+		error_image_code:false,
 
 		//error_message
 		error_message:'',
@@ -86,9 +87,21 @@ let vm = new Vue({
 			}else {
 				this.error_phone = false;
 			}
-		},
-		check_image_code(){
-
+			if (this.error_phone == false){
+				let url = '/phone/' + this.mobile + '/count/';
+				axios.get(url,{
+					responseType: 'json'
+				}).then(response =>{
+					if (response.data.count == 1){
+						this.error_mobile_message = '手机号已被注册';
+						this.error_phone = true;
+					}else {
+						this.error_phone = false;
+					}
+				}).catch(error=>{
+					console.log(error.data)
+				})
+			}
 		},
 		check_sms_code(){
 
@@ -98,6 +111,13 @@ let vm = new Vue({
 				this.error_allow = true;
 			}else {
 				this.error_allow = false;
+			}
+		},
+		check_image_codes(){
+			if (this.image_code.length < 4){
+				this.error_image_code = true;
+			}else {
+				this.error_image_code = false;
 			}
 		},
 		on_submit(){

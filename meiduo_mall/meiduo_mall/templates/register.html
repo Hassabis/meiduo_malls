@@ -7,6 +7,7 @@
 	<link rel="stylesheet" type="text/css" href="{{ static('css/main.css') }}">
 	<script type="text/javascript" src="{{ static('js/vue-2.5.16.js') }}"></script>
     <script type="text/javascript" src="{{ static('js/axios_0.18.0.min(1).js') }}"></script>
+{#    <script type="text/javascript" src="{{ static('js/common.js') }}"></script>#}
 </head>
 <body>
 	<div class="register_con">
@@ -48,7 +49,7 @@
 					</li>
 					<li>
 						<label>图形验证码:</label>
-						<input type="text" v-model="image_code" @blur="check_image_code" name="pic_code" id="pic_code" class="msg_input">
+						<input type="text" v-model="image_code" @blur="check_image_codes" name="pic_code" id="pic_code" class="msg_input">
 						<img :src="image_code_url" alt="图形验证码" class="pic_code" @click="generate_image_code">
 						<span v-show="error_image_code" class="error_tip">请填写图片验证码</span>
 					</li>
@@ -90,6 +91,7 @@
 		<p>CopyRight © 2016 北京美多商业股份有限公司 All Rights Reserved</p>
 		<p>电话：010-****888    京ICP备*******8号</p>
 	</div>
+    <script type="text/javascript" src="{{ static('js/common.js') }}"></script>
 	<script type="text/javascript" src="{{ static('js/register.js') }}"></script>
 </body>
 </html>

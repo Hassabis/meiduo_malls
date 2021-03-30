@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from django.views import View
+
 # Create your views here.
-import captcha
+from django.views import View
 from captcha.image import ImageCaptcha
 import random
 import string
@@ -23,8 +23,8 @@ class ImageCodeView(View):
 
         captcha_str = ''.join(random.sample(characters, char_num))
         # print(captcha_str)
-        # img = image.generate_image(captcha_str) 这种方式生成的图片无法映射到网页
-        img = image.generate(captcha_str) #这种方式生成的的图片无法保存
+        # img = image.generate_image(captcha_str)
+        img = image.generate(captcha_str) #这种方式生成的的图片无法保存,但是可以响应给前端
         # img.save(captcha_str + '.jpg')
         #将数据存入redis数据库，并且设置过期时间
         redis_conn = get_redis_connection('verify_code')
@@ -32,5 +32,3 @@ class ImageCodeView(View):
 
         #响应图形验证码
         return http.HttpResponse(img,content_type="image/jpg")
-
-
