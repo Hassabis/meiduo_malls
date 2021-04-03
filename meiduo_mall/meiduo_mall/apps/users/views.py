@@ -3,10 +3,53 @@ from django.shortcuts import render,redirect,reverse
 from django.http import HttpResponse
 from django.views import View
 from django import http
-import re
-from django.contrib.auth import login,authenticate #authenticate为Django自己提供的登录校验
+import re,json,logging
+from django.contrib.auth import login,logout,authenticate #authenticate为Django自己提供的登录校验
 from users.models import User
+from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
+from meiduo_mall.utlis.views import LoginRequiredJSONMixin
+
+logger = logging.getLogger("django")
+class EmailView(LoginRequiredJSONMixin,View):
+    """保存用户的邮箱"""
+    def put(self,request):
+        """接收参数"""
+        json_str = request.body.decode()
+        json_dict = json.loads(json_str)
+        email = json_dict.get("email")
+
+        try:
+            request.user.email = email
+            request.user.save()
+        except Exception as e:
+            logger.error(e)
+            return http.JsonResponse({'code':1,'errmsg':"邮箱保存失败"})
+
+        return http.JsonResponse({"code":0,"errmsg":"OK"})
+
+
+class UserCenter(LoginRequiredMixin,View):
+    def get(self,request):
+        context = {
+            "username":request.user.username,
+            "mobile":request.user.mobile,
+            "email":request.user.email,
+            "email_active":request.user.email_active
+        }
+        return render(request,'user_center_info.html',context)
+
+
+class LogoutView(View):
+    def get(self,request):
+        response = redirect(reverse("content:index"))
+        #退出登录
+        logout(request)
+        response.delete_cookie("username")
+
+        return response
+
+
 
 class LoginUser(View):
     def get(self,request):
@@ -38,7 +81,14 @@ class LoginUser(View):
         else:
             #默认两周
             request.session.set_expiry(None)
-        return redirect(reverse("content:index"))
+        next = request.GET.get("next")
+        if next:
+            response = redirect(next)
+
+        else:
+            response = redirect(reverse("content:index"))
+        response.set_cookie('username',user.username,max_age=3600 * 24 * 15)
+        return response
 
 
 

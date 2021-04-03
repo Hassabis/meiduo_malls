@@ -220,3 +220,5 @@ LOGGING = {
 AUTH_USER_MODEL = 'users.User'
 #指定自定义的认证后端，实现用户可以使用手机号跟账号登录 在djagno.conf.global_settings下
 AUTHENTICATION_BACKENDS = ['users.utlis.UsernameMobileBackends']
+#自带的是否登录的封装方法,未登录跳转到的页面
+LOGIN_URL = '/login/'

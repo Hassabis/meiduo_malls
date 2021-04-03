@@ -5,6 +5,7 @@ class User(AbstractUser):
     #在拥有父类的用户属性后增加自己的字段
     #在迁移前记得去global_settings里面将AUTH_USER_MODEL = 'users.User'复制到配置文件里，#指定自定义的用户模型类 值的语法 ==> '子应用.用户模型类'
     mobile = models.CharField(max_length=12,unique=True,verbose_name="手机号")
+    email_active = models.BooleanField(default=False,verbose_name="邮箱验证状态")
 
     class Meta:
         db_table = 'db_user'
