@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # 'meiduo_mall.apps.users',  追加导包路径后就不需要写这么长了
     'users',
+    'areas',#三级联动
+    'content',
+    'goods'
 ]
 
 MIDDLEWARE = [
@@ -109,7 +112,7 @@ DATABASES = {
 CACHES = {
     "default":{#默认的
         "BACKEND":"django_redis.cache.RedisCache",
-        "LOCATION":"redis://127.0.0.1:6397/0",
+        "LOCATION":"redis://127.0.0.1:6379/0",
         "OPTIONS":{
             "CLIENT_CLASS":"django_redis.client.DefaultClient",
         }

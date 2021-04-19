@@ -22,4 +22,5 @@ urlpatterns = [
     url(r'^',include(('users.urls','users'),namespace="users")),
     url(r'^',include(('content.urls','content'),namespace="content")),
     url(r'^',include('vififyimage.urls')),
+    url(r'^',include('areas.urls')),
 ]

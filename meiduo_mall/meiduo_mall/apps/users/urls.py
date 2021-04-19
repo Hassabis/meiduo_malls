@@ -16,4 +16,11 @@ urlpatterns = [
 
     url(r'^emails/$',views.EmailView.as_view()),
 
+    #新增地址
+    url(r'^addresses/create/$',views.AddressCreateView.as_view()),
+    #展示用户地址
+    url(r'^addresses/$', views.AddressView.as_view(), name='address'),
+    url(r'^addresses/(?P<address_id>\d+)/$', views.UpdateDestoryAddressView.as_view()),
+
+
 ]
